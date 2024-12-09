@@ -31,6 +31,8 @@ class ListCreateCareerView(APIView):
         """
         Method to list all Careers
         """
+        logger.info("Starting list careers...")
+        
         usecase = ListCareerUseCase()
 
         result = usecase.run()
