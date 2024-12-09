@@ -33,4 +33,4 @@ jobs:
         run: |
           pip install coverage
           coverage run manage.py test
-          coverage retort
+          coverage report
