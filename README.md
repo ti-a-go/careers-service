@@ -1,3 +1,7 @@
+# Deployed application
+
+The deployed version of the application can be accessed in the following URL: https://my-fav-app-04d416c5eb24.herokuapp.com/careers/
+
 # How to run the project
 
 ## 1. Environment variables
