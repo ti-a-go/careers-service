@@ -6,6 +6,9 @@ on:
   pull_request:
     branch: [ main ]
 
+env:
+  SECRET_KEY: "django-insecure-kigx$f(5*b0sg41&y8e%#@wlquv0#ggtt6nb053l$f!(ll4ll4"
+
 jobs:
   build:
     runs-on: ubuntu-latest
