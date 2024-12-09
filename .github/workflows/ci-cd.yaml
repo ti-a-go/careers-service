@@ -6,9 +6,6 @@ on:
   pull_request:
     branch: [ main ]
 
-env:
-  SECRET_KEY: "django-insecure-kigx$f(5*b0sg41&y8e%#@wlquv0#ggtt6nb053l$f!(ll4ll4"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,6 +26,8 @@ jobs:
           pip install flake8
           flake8 --ignore=E501,W503,W504 app setup
       - name: Coverage report
+        env:
+          SECRET_KEY: "django-insecure-kigx$f(5*b0sg41&y8e%#@wlquv0#ggtt6nb053l$f!(ll4ll4"
         run: |
           pip install coverage
           coverage run manage.py test
