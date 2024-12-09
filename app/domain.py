@@ -1,8 +1,6 @@
 from datetime import datetime
 from typing import Optional
 
-from django.db.models.query import QuerySet
-
 
 class Career:
 

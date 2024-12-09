@@ -4,13 +4,18 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from app.usecases import ListCareerUseCase, CreateCareerUseCase, UpdataCareerUseCase, DeleteCareerUseCase
+from app.usecases import (
+    ListCareerUseCase,
+    CreateCareerUseCase,
+    UpdataCareerUseCase,
+    DeleteCareerUseCase,
+)
 from app.app_requests import CreateCareerRequest, UpdateCareerRequest
 from app.responses import (
     ListCareersResponse,
     CreateCareerResponse,
     UpdateCareerResponse,
-    DeleteCareerResponse
+    DeleteCareerResponse,
 )
 
 
@@ -68,7 +73,9 @@ class ListCreateCareerView(APIView):
 
             return Response(response.data, response.status)
 
-        logger.error(f"Error while trying to create a new Career: {str(response.data)}")
+        logger.error(
+            f"Error while trying to create a new Career: {str(response.data)}"
+        )
 
         return Response(response.data, response.status)
 
@@ -124,7 +131,7 @@ class UpdateDeleteCareerView(APIView):
             logger.info(f"Could not find career to be deleted with id: {pk}")
 
             return Response(response.data, response.status)
-        
+
         logger.error(f"Error while trying to delete career with id: {pk}")
 
         return Response(response.data, response.status)

@@ -14,7 +14,9 @@ from app.serializers import (
 )
 
 
-INTERNAL_SERVER_ERROR_DATA = {"error_essage": "Please, contact the server maintainers."}
+INTERNAL_SERVER_ERROR_DATA = {
+    "error_essage": "Please, contact the server maintainers."
+}
 NOT_FOUND_DATA = {"error_message": "Career not found"}
 
 
@@ -53,7 +55,9 @@ class ListCareersResponse:
     @property
     def data(self):
         if self.is_success:
-            serializer = self.serializer_class(self.__result.career_list, many=True)
+            serializer = self.serializer_class(
+                self.__result.career_list, many=True
+            )
             return serializer.data
         return INTERNAL_SERVER_ERROR_DATA
 
@@ -87,9 +91,9 @@ class UpdateCareerResponse:
     @property
     def is_not_found(self) -> bool:
         if (
-            self.__result.name == "failure"
-            and hasattr(self.__result, "career")
-            and not hasattr(self.__result.career, "id")
+            self.__result.name == "failure" and
+            hasattr(self.__result, "career") and
+            not hasattr(self.__result.career, "id")
         ):
             return True
 

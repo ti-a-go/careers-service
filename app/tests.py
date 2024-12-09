@@ -26,7 +26,9 @@ class CareerTest(TestCase):
         title = "title"
         content = "content"
 
-        CareerModel.objects.create(username=username, title=title, content=content)
+        CareerModel.objects.create(
+            username=username, title=title, content=content
+        )
 
         # When
         response = self.client.get("/careers/")
@@ -43,7 +45,7 @@ class CareerTest(TestCase):
         assert career["title"] == title
         assert career["content"] == content
         assert career["id"] == 1
-        assert type(career["created_datetime"]) == str
+        assert isinstance(career["created_datetime"], str)
 
     def test_should_return_empy_career_list(self):
         # Given
@@ -61,7 +63,9 @@ class CareerTest(TestCase):
     def test_should_not_list_all_careers_when_database_raises_exception(self):
         # Set up
         with patch.object(CareerModel.objects, "all") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
 
             # Given
             CareerModel.objects.create(
@@ -74,12 +78,18 @@ class CareerTest(TestCase):
             # Then
             error_body = json.loads(response.content.decode())
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert error_body == INTERNAL_SERVER_ERROR_DATA
 
     def test_should_create_new_career(self):
         # Given
-        post_data = {"username": "username", "title": "title", "content": "content"}
+        post_data = {
+            "username": "username",
+            "title": "title",
+            "content": "content",
+        }
 
         # When
         response = self.client.post("/careers/", post_data)
@@ -91,19 +101,25 @@ class CareerTest(TestCase):
         assert response.status_code == status.HTTP_201_CREATED
 
         assert career == post_data
-        assert career.get("id") == None
-        assert career.get("created_datetime") == None
+        assert career.get("id") is None
+        assert career.get("created_datetime") is None
 
         assert created_career[0].id == 1
-        assert type(created_career[0].created_datetime) == datetime
+        assert isinstance(created_career[0].created_datetime, datetime)
 
     def test_should_not_create_career_when_database_raises_exception(self):
         # Set up
         with patch.object(CareerModel, "save") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
 
             # Given
-            post_data = {"username": "username", "title": "title", "content": "content"}
+            post_data = {
+                "username": "username",
+                "title": "title",
+                "content": "content",
+            }
 
             # When
             response = self.client.post("/careers/", post_data)
@@ -111,7 +127,9 @@ class CareerTest(TestCase):
             # Then
             error_body: dict = json.loads(response.content.decode())
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert error_body == INTERNAL_SERVER_ERROR_DATA
 
     def test_should_not_create_new_career_when_data_is_not_valid(self):
@@ -137,7 +155,9 @@ class CareerTest(TestCase):
     def test_should_update_career(self):
         # Set up
         username = "username"
-        CareerModel.objects.create(username=username, title="title", content="content")
+        CareerModel.objects.create(
+            username=username, title="title", content="content"
+        )
 
         # Given
         patch_data = {"title": "new title", "content": "new content"}
@@ -162,7 +182,9 @@ class CareerTest(TestCase):
     ):
         # Set up
         with patch.object(CareerModel.objects, "filter") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
 
             username = "username"
             CareerModel.objects.create(
@@ -178,7 +200,9 @@ class CareerTest(TestCase):
             # Then
             error_body = json.loads(response.content.decode())
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert error_body == INTERNAL_SERVER_ERROR_DATA
 
     def test_should_not_update_career_when_database_raises_exception_while_updating_career(
@@ -186,7 +210,9 @@ class CareerTest(TestCase):
     ):
         # Set up
         with patch.object(QuerySet, "update") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
 
             username = "username"
             CareerModel.objects.create(
@@ -202,7 +228,9 @@ class CareerTest(TestCase):
             # Then
             error_body = json.loads(response.content.decode())
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert error_body == INTERNAL_SERVER_ERROR_DATA
 
     def test_should_not_update_career_when_request_data_is_not_valid(self):
@@ -223,7 +251,9 @@ class CareerTest(TestCase):
         patch_data = {}
 
         # When
-        response = self.client.patch(f"/careers/{career_data['id']}/", patch_data)
+        response = self.client.patch(
+            f"/careers/{career_data['id']}/", patch_data
+        )
 
         # Then
         career = CareerModel.objects.filter(id=career_data["id"]).first()
@@ -264,7 +294,9 @@ class CareerTest(TestCase):
         }
 
         # When
-        response = self.client.patch(f"/careers/{not_existent_id}/", patch_data)
+        response = self.client.patch(
+            f"/careers/{not_existent_id}/", patch_data
+        )
 
         # Then
         career = CareerModel.objects.filter(id=career_data["id"]).first()
@@ -296,9 +328,7 @@ class CareerTest(TestCase):
         response = self.client.delete(f"/careers/{career_data['id']}/")
 
         # Then
-        career = CareerModel.objects.filter(id=career_data["id"]).first()
         response_data = response.content.decode()
-
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert response_data == ""
@@ -322,9 +352,7 @@ class CareerTest(TestCase):
         response = self.client.delete(f"/careers/{no_existent_id}/")
 
         # Then
-        career = CareerModel.objects.filter(id=career_data["id"]).first()
         response_data = json.loads(response.content.decode())
-
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
         assert response_data == NOT_FOUND_DATA
@@ -332,8 +360,10 @@ class CareerTest(TestCase):
     def test_should_not_delete_career_when_database_raises_exception(self):
         # Set up
         with patch.object(QuerySet, "delete") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
-            
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
+
             # Given
             career_data = {
                 "id": 1,
@@ -359,14 +389,20 @@ class CareerTest(TestCase):
             assert career.title == career_data["title"]
             assert career.content == career_data["content"]
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert response_data == INTERNAL_SERVER_ERROR_DATA
-    
-    def test_should_not_delete_career_when_database_raises_exception_when_trying_to_get_career_by_id(self):
+
+    def test_should_not_delete_career_when_database_raises_exception_when_trying_to_get_career_by_id(
+        self,
+    ):
         # Set up
         with patch.object(CareerModel.objects, "filter") as mock_method:
-            mock_method.side_effect = Exception("Test database raise exception.")
-            
+            mock_method.side_effect = Exception(
+                "Test database raise exception."
+            )
+
             # Given
             career_data = {
                 "id": 1,
@@ -386,5 +422,7 @@ class CareerTest(TestCase):
             # Then
             response_data = json.loads(response.content.decode())
 
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            assert (
+                response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
             assert response_data == INTERNAL_SERVER_ERROR_DATA

@@ -16,7 +16,13 @@ docker exec -it application python manage.py migrate
 
 Ther server should be running on [http://localhost:8000/careers/](http://localhost:8000/careers/)
 
-## 3. Run tests
+## 3. Run linter
+
+```sh
+flake8 --ignore=E501,W503,W504 app
+```
+
+## 4. Run tests
 
 ```sh
 docker exec -it application coverage run manage.py test

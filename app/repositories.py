@@ -33,7 +33,9 @@ class CareerRepository:
 
     def save_career(self, career: Career) -> Optional[Career]:
         career_model = CareerModel(
-            username=career.username, title=career.title, content=career.content
+            username=career.username,
+            title=career.title,
+            content=career.content,
         )
 
         try:
@@ -70,7 +72,6 @@ class CareerRepository:
 
         return career
 
-
     def delete_career(self, career: Career) -> Optional[int]:
         try:
             CareerModel.objects.filter(id=career.id).delete()
@@ -82,12 +83,11 @@ class CareerRepository:
 
         logger.info(f"Career delete successfully. Id: {id}")
         return id
-    
 
     def get_career_by_id(self, id: int) -> Optional[Career]:
         try:
             found_career = CareerModel.objects.filter(id=id).first()
-        
+
         except Exception as e:
             logger.error(
                 f"An exception happened while trying to find the career with id: {id}. Exception: {str(e)}"

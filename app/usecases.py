@@ -1,6 +1,11 @@
 from app.repositories import CareerRepository
 from app.domain import Career
-from app.results import CreateCareerResult, ListCareersResult, UpdateCareerResult, DeleteCareerResult
+from app.results import (
+    CreateCareerResult,
+    ListCareersResult,
+    UpdateCareerResult,
+    DeleteCareerResult,
+)
 
 
 class CreateCareerUseCase:
@@ -59,7 +64,7 @@ class DeleteCareerUseCase:
 
         if not hasattr(career, "id"):
             return DeleteCareerResult("failure", career)
-        
+
         id = self.repository.delete_career(career)
 
         if id is None:
