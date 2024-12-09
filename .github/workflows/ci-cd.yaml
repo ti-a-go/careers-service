@@ -3,7 +3,7 @@ name: django-app
 on:
   push:
     branch: [ main ]
-  pull_resquest:
+  pull_request:
     branch: [ main ]
 
 jobs:
