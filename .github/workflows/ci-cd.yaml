@@ -27,7 +27,7 @@ jobs:
           flake8 --ignore=E501,W503,W504 app setup
       - name: Coverage report
         env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           pip install coverage
           coverage run manage.py test
